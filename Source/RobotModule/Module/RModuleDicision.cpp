@@ -14,7 +14,11 @@
 void URModuleDicision::RunToModule()
 {
 	//
-	LoadToModuleInfo();
+	/*LoadToModuleInfo(TEXT("/Game/Data/"), TEXT("ModuleDefine"));
+	LoadToModuleInfo(TEXT("/Game/Data/"), TEXT("WeaponDefine"));*/
+
+	mdInfo = LoadToStructInfo<FModuleDefine>(FString("ModuleDefine"));
+	wpInfo = LoadToStructInfo<FWeaponDefine>(FString("WeaponDefine"));
 
 	URModuleSequence* root = CreateModuleNode<URModuleSequence>();
 	
@@ -32,33 +36,70 @@ void URModuleDicision::RunToModule()
 	root->Run();	
 }
 
-/*
- */
-bool URModuleDicision::LoadToModuleInfo()
+///*
+// */
+//bool URModuleDicision::LoadToModuleInfo(const FString& path, const FString& fileName)
+//{
+//	FString FilePath = FString::Printf(TEXT("DataTable'%s%s.%s'"), *path, *fileName);
+//	//FString FilePath = FString::Printf(TEXT("DataTable'/Game/Data/ModuleDefine.ModuleDefine'"));
+//
+//	// UE_LOG(LogClass, Log, TEXT("LoadToModuleInfo path ---     %s"), *FilePath);
+//
+//	UDataTable* loadObj = LoadObject<UDataTable>(nullptr, *FilePath);
+//	if (loadObj == nullptr) return false;
+//
+//	UDataTable*  data = Cast<UDataTable>(loadObj);
+//	if (data == nullptr) return false;
+//
+//	for (int loop = 0, max = data->RowMap.Num(); loop < max; loop++)
+//	{
+//		FString str = FString::Printf(TEXT("%d"), loop + 1);
+//		FName entry = FName(*str);
+//
+//		auto pRow = data->FindRow<FModuleDefine>(entry, FString("ModuleDefine"));
+//		if (pRow != nullptr)
+//		{
+//			FModuleDefine node(*pRow);
+//			mdInfo.Add(node);
+//		}
+//	}
+//	return true;
+//}
+
+template<typename T>
+TArray<T> URModuleDicision::LoadToStructInfo(const FString& fileName)
 {
-	FString path = FString::Printf(TEXT("DataTable'/Game/Data/ModuleDefine.ModuleDefine'"));
+	TArray<T> structInfo;
 
-	// UE_LOG(LogClass, Log, TEXT("LoadToModuleInfo path ---     %s"), *path);
+	FString FilePath = FString::Printf(TEXT("DataTable'/Game/Data/%s.%s'"), *fileName, *fileName);
 
-	UDataTable* loadObj = LoadObject<UDataTable>(nullptr, *path);
-	if (loadObj == nullptr) return false;
+	UDataTable* loadObj = LoadObject<UDataTable>(nullptr, *FilePath);
+	if (loadObj == nullptr)
+	{
+		UE_LOG(LogClass, Log, TEXT("LoadToStructInfo _ loadObj == nullptr %s  "), *FilePath);
+		return structInfo;
+	}
 
 	UDataTable*  data = Cast<UDataTable>(loadObj);
-	if (data == nullptr) return false;
+	if (data == nullptr)
+	{
+		UE_LOG(LogClass, Log, TEXT("LoadToStructInfo _ data == nullptr "));
+		return structInfo;
+	}
 
 	for (int loop = 0, max = data->RowMap.Num(); loop < max; loop++)
 	{
 		FString str = FString::Printf(TEXT("%d"), loop + 1);
 		FName entry = FName(*str);
 
-		auto pRow = data->FindRow<FModuleDefine>(entry, FString("ModuleDefine"));
+		auto pRow = data->FindRow<T>(entry, FString("ModuleDefine"));
 		if (pRow != nullptr)
 		{
-			FModuleDefine node(*pRow);
-			mdInfo.Add(node);
+			structInfo.Emplace(*pRow);
 		}
 	}
-	return true;
+	
+	return structInfo;
 }
 
 /*
@@ -124,7 +165,6 @@ FModuleDefine* URModuleNode::GetRandModuleInfo(INT32 bitflagCommand)
 }
 
 
-
 /*
  */
 bool URModuleLeg::Run()
@@ -138,6 +178,7 @@ bool URModuleLeg::Run()
 	m_DisicionBB->CreateRobotModule(*rModule, *FString::Printf(TEXT("%s;None"), *GetModuleRegionName(rModule->eRegion)));
 	return true;
 }
+
 
 /*
  */
@@ -181,6 +222,7 @@ bool URModuleShoulder::bCockpicAndShoulder()
 						!= nullptr ? true : false; 
 }
 
+
 /*
  */
 void URModuleShoulder::RandShoulderType()
@@ -212,6 +254,8 @@ void URModuleShoulder::RandShoulderType()
 }
 
 
+/*
+ */
 bool URModuleShoulderR::Run()
 {
 #pragma region NOT CODE
@@ -289,6 +333,9 @@ bool URModuleShoulderR::Run()
 	return true;
 }
 
+
+/*
+ */
 bool URModuleShoulderL::Run()
 {
 #pragma region NOT CODE

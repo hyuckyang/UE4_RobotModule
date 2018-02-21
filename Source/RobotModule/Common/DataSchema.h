@@ -50,6 +50,7 @@ enum class eModuleRegion : uint8
 	LeftArmNoHand,
 	RightArm,
 	RightArmNoHand,
+	Weapon,
 	Max
 };
 ENUM_CLASS_FLAGS(eModuleRegion);
@@ -105,8 +106,18 @@ enum class eModuleBody : uint8
 	Max
 };
 
-
-
+/*
+ *
+ */
+UENUM(BlueprintType)
+enum class eModuleWeaponRange : uint8
+{
+	None = 0,
+	Melee,
+	Long,
+	Shield,
+	Max
+};
 
 USTRUCT(BlueprintType)
 struct FModuleDefine : public FTableRowBase
@@ -145,7 +156,33 @@ public:
 	FString strPath;
 };
 
+USTRUCT(BlueprintType)
+struct FWeaponDefine : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
 
+public:
+
+	FWeaponDefine() {}
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	int32 id;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	FString strName;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	eModuleRegion eRegion;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	eModuleMesh eMesh;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	eModuleWeaponRange eWeaponRange;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	FString strPath;
+};
 
 
 

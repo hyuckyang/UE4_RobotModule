@@ -1,0 +1,6 @@
+,id,strName,eRegion,eMesh,eWeaponRange,strPath
+1,1,Weapon_Shotgun_Lvl1,Weapon,StaticMesh,Long,/Game/MC_Humanoids/Meshes/Weapons/
+2,2,Weapon_Shotgun_Lvl2,Weapon,StaticMesh,Long,/Game/MC_Humanoids/Meshes/Weapons/
+3,3,Weapon_Shotgun_Lvl3,Weapon,StaticMesh,Long,/Game/MC_Humanoids/Meshes/Weapons/
+4,4,Weapon_Shotgun_Lvl4,Weapon,StaticMesh,Long,/Game/MC_Humanoids/Meshes/Weapons/
+5,5,Weapon_Shotgun_Lvl5,Weapon,StaticMesh,Long,/Game/MC_Humanoids/Meshes/Weapons/

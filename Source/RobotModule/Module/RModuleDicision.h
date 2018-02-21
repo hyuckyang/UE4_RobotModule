@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Common/DataSchema.h"
+
 #include "UObject/NoExportTypes.h"
 #include "RModuleDicision.generated.h"
 
@@ -17,13 +18,17 @@ class ROBOTMODULE_API URModuleDicision : public UObject
 
 	URModuleDicision() : Super() { };
 
-	bool LoadToModuleInfo();
+	// bool LoadToModuleInfo(const FString& path, const FString& fileName);
+	
+	template<typename T>
+	TArray<T> LoadToStructInfo(const FString& fileName);
 
 	template<typename T>
 	T* CreateModuleNode();
 
 private:
 	TArray<FModuleDefine> mdInfo;
+	TArray<FWeaponDefine> wpInfo;
 
 	class ARModuleCharacter* m_ModuleRobot;
 
@@ -59,8 +64,6 @@ public:
 protected:
 	URModuleDicision* m_DisicionBB;		
 };
-
-
 
 /*
  *
